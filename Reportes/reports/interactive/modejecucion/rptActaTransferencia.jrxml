@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2021-06-15T16:31:50 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptActaTransferencia" pageWidth="612" pageHeight="792" columnWidth="528" leftMargin="56" rightMargin="28" topMargin="28" bottomMargin="28" isIgnorePagination="true" uuid="99ad5a5e-e38a-47a4-ad48-1591dc7dc9a0">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ucp_prodd_jar_149"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="ireport.jasperserver.url" value="http://172.16.15.157:8011/jasperserver/"/>
+	<property name="ireport.jasperserver.user" value="jasperadmin"/>
+	<property name="ireport.jasperserver.reportUnit" value="/reports/interactive/modejecucion/rptActaTransferencia"/>
+	<parameter name="pv_idcontrato" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select max(sc.fecha_fin) as fechaentrega,
+c.descripcion, 
+e.nombre_proyecto,
+e.municipio
+from con_contrato c, con_subcontrato sc, con_subcontratoproyecto csc, evav_proyecto e
+where c.idcon_contrato=sc.idcon_contrato
+and sc.idcon_subcontrato= csc.idcon_subcontrato
+and e.ideva_proyecto=csc.ideva_proyecto
+and c.idcon_contrato= $P{pv_idcontrato}
+group by c.descripcion, 
+e.nombre_proyecto,
+e.municipio]]>
+	</queryString>
+	<field name="fechaentrega" class="java.sql.Timestamp"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="nombre_proyecto" class="java.lang.String"/>
+	<field name="municipio" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="72">
+			<staticText>
+				<reportElement x="0" y="42" width="528" height="30" uuid="34c98d1d-c826-4bc6-b244-71156512c514"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TRANSFERENCIA DEFINITIVA]]></text>
+			</staticText>
+			<image scaleImage="RealSize">
+				<reportElement x="0" y="0" width="90" height="40" uuid="182e1912-9c99-4aaa-89dd-ac0a68323b20"/>
+				<imageExpression><![CDATA["JasperReportsServer-1/reports/interactive/modejecucion/ESCUDONAL.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="457" y="42" width="70" height="12" uuid="1552e94e-2879-443f-9082-2778d83f59be"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[SISTEMA SGP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="416" y="54" width="31" height="10" uuid="94c1537a-e4dd-4532-bb22-7820bb725ae1">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="448" y="54" width="79" height="10" uuid="52ed93d3-e42e-47be-a6f5-85d5165f6d76">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="466" y="62" width="20" height="10" uuid="cccb0329-a756-497b-a42f-671a27feb765">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="486" y="62" width="20" height="10" uuid="3bc3b3d1-b658-408c-b6d9-1fb7f305da8d">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[de]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="506" y="62" width="20" height="10" uuid="a5823f12-92eb-4557-871e-c594f71d3039"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="663">
+			<textField>
+				<reportElement x="0" y="140" width="528" height="50" uuid="c9531c8d-8d76-458b-a1bc-506ce06660a2"/>
+				<textElement textAlignment="Justified">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{municipio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="190" width="528" height="130" uuid="a0918b9a-f0b7-491a-9780-e44e531b96b7"/>
+				<textElement textAlignment="Justified">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Quien es el íntegro y exclusivo responsable de la infraestructura física y los equipos recibidos que conforman el sistema, asumiendo la responsabilidad por la administración, operación, mantenimiento y la sostenibilidad de las obras de la infraestructura física y los equipos recibidos.
+
+El MMAyA -UCP-PAAP a partir de este momento queda exento de toda responsabilidad en relación a los mismos.
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="3" width="528" height="40" uuid="8ca96ef3-d390-4270-9c2b-c673a3a81170"/>
+				<textElement textAlignment="Justified">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[A partir de la fecha ____________________, se perfecciona la transferencia del proyecto:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="110" width="528" height="30" uuid="c41162f4-ec24-443f-9cf2-e98962f8f905"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[a favor del Gobierno Autónomo Municipal de:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="450" width="528" height="20" uuid="859b30c7-290c-4932-b4b6-24863223f1ca"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COORDINADORA   GENERAL  DE  PROGRAMA ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="600" width="528" height="20" uuid="e0492d5d-1a56-4322-bb24-c451f097723f"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ALCALDE  MUNICIPAL ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="340" width="528" height="30" uuid="1396aeef-6693-4e1b-a937-9cccef304d2f"/>
+				<textElement>
+					<font size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Por Unidad Coordinadora  del Programa:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="520" width="528" height="30" uuid="23c9b968-3351-4927-b99b-573a2daa544a"/>
+				<textElement>
+					<font size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Por el municipio de: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="50" width="528" height="60" uuid="a8559cad-f45c-445d-877c-9d6342edc040"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre_proyecto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="620" width="528" height="30" uuid="82fe1035-5e5d-4b09-af3c-bd6af39cb385"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{municipio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-2" y="470" width="528" height="20" uuid="1b6439dd-721c-4d21-a47f-1a46a86aa4f6"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MMAyA-UCP-PAAP ]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+</jasperReport>

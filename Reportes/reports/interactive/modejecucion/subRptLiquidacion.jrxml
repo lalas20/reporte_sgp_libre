@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2021-05-19T21:51:51 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subRptLiquidacion" pageWidth="612" pageHeight="792" columnWidth="528" leftMargin="56" rightMargin="28" topMargin="14" bottomMargin="28" uuid="f647657d-2629-43c0-b0c8-96b36c08c674">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ucp_desarrollo_pmsapp"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="226"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="769"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="1000"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="0"/>
+	<parameter name="spv_idplanilla" class="java.lang.Integer">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[select l.codigo_proyecto ||'-'|| l.proyecto as proyecto,l.codigo_prespuesto ||'-'||l.presupuesto  as presupuesto ,l.codigo_componente ||'-'|| l.componente as componente,
+   case when  el.codigo_convenio is null then
+             f_nombreclasificador(el.idc_cuenta)|| ' ('||f_nombreinstitucion(el.idgen_institucion)|| ')'
+   else ( select f_nombreclasificador(el.idc_cuenta)|| ' ('||i.descripcion||' - '|| cnv.conv_cod || ')'
+          from cnv_estructurafin e, gen_institucion i, cnv_convenio  cnv
+          where e.idc_financiador=i.idgen_institucion
+          and cnv.idcnv_convenio=e.idcnv_convenio
+          and e.idcnv_estructurafin=el.codigo_convenio ::NUMERIC
+          group by i.descripcion,cnv.conv_cod )
+   end cuenta,
+    el.liquidacion_debes,el.liquidacion_haberes ,
+    case  when  el.liquidacion_debes =0 then el.liquidacion_haberes 
+		else el.liquidacion_debes
+        end monto
+    from eje_liquidacionplanilla el, eje_planillacomp ec,con_subcontratoproyecto ssc,lic_cargaproyecto l
+    where el.ideje_planillacomp=ec.ideje_planillacomp
+    and ssc.idcon_subcontratoproyecto=ec.idcon_subcontratoproyecto
+    and ssc.ideva_proyecto=l.ideva_proyecto
+    and ssc.ideva_presupuesto=l.ideva_presupuesto
+    and ssc.ideva_presucomp=l.ideva_presucomponente
+    and ec.ideje_planilla= $P{spv_idplanilla} 
+    and el.idc_cuenta::text in (select unnest(string_to_array(ejesrv_f_cuentabytipoplanilla($P{spv_idplanilla}),',')))
+group  by l.codigo_proyecto,l.codigo_prespuesto,l.proyecto ,l.presupuesto,l.codigo_componente ,l.componente,el.codigo_convenio,el.idc_cuenta,el.liquidacion_debes,el.liquidacion_haberes,el.idgen_institucion,
+ l.ideva_proyecto,l.ideva_presupuesto,l.ideva_presucomponente
+order by l.ideva_proyecto,l.ideva_presupuesto,l.ideva_presucomponente,el.idc_cuenta]]>
+	</queryString>
+	<field name="proyecto" class="java.lang.String"/>
+	<field name="presupuesto" class="java.lang.String"/>
+	<field name="componente" class="java.lang.String"/>
+	<field name="cuenta" class="java.lang.String"/>
+	<field name="liquidacion_debes" class="java.math.BigDecimal"/>
+	<field name="liquidacion_haberes" class="java.math.BigDecimal"/>
+	<field name="monto" class="java.math.BigDecimal"/>
+	<variable name="v_subtotal" class="java.math.BigDecimal" resetType="Group" resetGroup="grupoComponente" calculation="Sum">
+		<variableExpression><![CDATA[$F{monto}]]></variableExpression>
+	</variable>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{proyecto}]]></groupExpression>
+		<groupHeader>
+			<band height="10">
+				<textField>
+					<reportElement x="80" y="0" width="448" height="10" uuid="7da0d485-06bf-4615-b110-cabafefdd675"/>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{proyecto}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="0" width="79" height="10" uuid="d882a5ec-887a-43ef-9e40-b7f0f8d59c4f"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nombre del Proyecto:]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="grupopto">
+		<groupExpression><![CDATA[$F{presupuesto}]]></groupExpression>
+		<groupHeader>
+			<band height="10">
+				<staticText>
+					<reportElement x="0" y="0" width="70" height="10" uuid="958487ca-f6bc-4fb9-a867-cfb6695a974e"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Presupuesto:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="70" y="0" width="458" height="10" uuid="0744455c-b46d-42aa-8c35-d3e22e5f7da1"/>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{presupuesto}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="grupoComponente">
+		<groupExpression><![CDATA[$F{componente}]]></groupExpression>
+		<groupHeader>
+			<band height="26">
+				<staticText>
+					<reportElement x="0" y="16" width="428" height="10" uuid="9b716d42-35a6-401a-ac9e-028a46577922"/>
+					<box>
+						<pen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Descripción]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="428" y="16" width="100" height="10" uuid="4ed7dad0-3a8a-4792-821f-23cd4c92871d"/>
+					<box>
+						<pen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Monto]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="1" width="70" height="10" uuid="645e1b4f-d963-4521-9095-532cf401c567"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Componente:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="70" y="1" width="458" height="10" uuid="ddcbe328-cfa1-40d5-a363-d1a37f563159"/>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{componente}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="13" width="528" height="1" uuid="6f2a0971-d33c-4f18-8f97-d1a71b6cb79f"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="10">
+				<textField pattern="#,##0.###">
+					<reportElement x="428" y="0" width="100" height="10" uuid="104f2e3f-9984-4428-adc7-cee60779e728"/>
+					<box rightPadding="5">
+						<pen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{v_subtotal}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="328" y="0" width="100" height="10" uuid="b8da95f1-0bfc-4794-b3a0-aa3023cdf6ec"/>
+					<box leftPadding="5">
+						<pen lineWidth="0.5"/>
+					</box>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total:]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="10" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="428" height="10" uuid="fb6d300a-901f-4f48-9877-8c46c55da33e"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuenta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###">
+				<reportElement x="428" y="0" width="100" height="10" uuid="4d64f667-4a3d-4951-be77-869a654f79d9"/>
+				<box rightPadding="5">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<lastPageFooter>
+		<band height="108">
+			<staticText>
+				<reportElement x="150" y="90" width="200" height="14" uuid="30c3e7ad-2551-422d-a214-8425762b527b"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SEGUIDOR]]></text>
+			</staticText>
+		</band>
+	</lastPageFooter>
+</jasperReport>

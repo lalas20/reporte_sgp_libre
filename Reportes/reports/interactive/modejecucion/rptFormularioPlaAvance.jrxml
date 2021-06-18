@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2021-06-15T16:31:49 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptFormularioPlaAvance" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="708" leftMargin="56" rightMargin="28" topMargin="28" bottomMargin="28" uuid="b2a22062-79c4-4ba5-8f3b-7d03be8a6a8d">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ucp_desarrollo_pmsapp"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="ireport.jasperserver.url" value="http://172.16.15.157:8011/jasperserver/"/>
+	<property name="ireport.jasperserver.user" value="jasperadmin"/>
+	<property name="ireport.jasperserver.reportUnit" value="/reports/interactive/modejecucion/rptFormularioPlaAvance"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+	<parameter name="pv_idcontrato" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select c.cont_cod,c.descripcion,
+(select g.descripcion from gen_institucion g where g.idgen_institucion=p.idgen_institucion)empresa ,
+ejesrv_f_monto_totalcontrato(c.idcon_contrato) totalcontrato,c.codigo_contratofisico,
+ejesrv_f_monto_totalcontrato_cuenta(c.idcon_contrato,304)montofinanciador,
+ejesrv_f_monto_totalcontrato_cuenta(c.idcon_contrato,305)montocontraparte,
+c.fecha_firma,c.plazo_total plazocontrato,c.fecha_inicio,
+c.diaporejecutar diasporejecutar,
+c.diaejecutado diasejecutado,
+ejesrv_f_monto_totalcontrato_cuenta(c.idcon_contrato,306) montoespecie,
+(
+select 
+sum(round(ejesrv_f_total_planillado_subcontrato(s.idcon_subcontrato)*100/ejesrv_f_total_subcontrato_occom(s.idcon_subcontrato),2)) 
+from con_subcontrato s
+where s.idcon_contrato=c.idcon_contrato
+) avancefisicoacumulado,
+(select case when (max(eje.numero_planilla::integer)) is NULL then 1 	
+		else max(eje.numero_planilla::integer)+1 end
+from con_subcontrato sc,eje_planilla eje
+where sc.idcon_subcontrato=eje.idcon_subcontrato
+and eje.idc_tipoplanilla=274
+and sc.idcon_contrato=c.idcon_contrato) nroplanilla, 
+c.fecha_final fechafin,
+txtfecha_firma,txtfecha_inicio,txtf_recep_provisional,txtf_recep_definitiva,txtfecha_final
+from conv_rptcontrato c, lic_pliegoproponentes p
+where c.idlic_pliego=p.idlic_pliego
+and c.idcon_contrato= $P{pv_idcontrato}]]>
+	</queryString>
+	<field name="cont_cod" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="empresa" class="java.lang.String"/>
+	<field name="totalcontrato" class="java.math.BigDecimal"/>
+	<field name="codigo_contratofisico" class="java.lang.String"/>
+	<field name="montofinanciador" class="java.math.BigDecimal"/>
+	<field name="montocontraparte" class="java.math.BigDecimal"/>
+	<field name="fecha_firma" class="java.sql.Date"/>
+	<field name="plazocontrato" class="java.lang.Integer"/>
+	<field name="fecha_inicio" class="java.sql.Date"/>
+	<field name="diasporejecutar" class="java.lang.Double"/>
+	<field name="diasejecutado" class="java.lang.Double"/>
+	<field name="montoespecie" class="java.math.BigDecimal"/>
+	<field name="avancefisicoacumulado" class="java.math.BigDecimal"/>
+	<field name="nroplanilla" class="java.lang.Integer"/>
+	<field name="fechafin" class="java.sql.Date"/>
+	<field name="txtfecha_firma" class="java.lang.String"/>
+	<field name="txtfecha_inicio" class="java.lang.String"/>
+	<field name="txtf_recep_provisional" class="java.lang.String"/>
+	<field name="txtf_recep_definitiva" class="java.lang.String"/>
+	<field name="txtfecha_final" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="72" splitType="Stretch">
+			<image scaleImage="RealSize">
+				<reportElement x="0" y="0" width="90" height="40" uuid="012eb469-b3bf-4ad3-bb57-798df9c7ced2"/>
+				<imageExpression><![CDATA["JasperReportsServer-1/reports/interactive/modejecucion/ESCUDONAL.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="639" y="40" width="70" height="12" uuid="d8e441fe-5fa6-4ca5-9576-e54ee658c081"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[SISTEMA SGP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="598" y="52" width="31" height="10" uuid="cc1e6128-9125-4d46-8983-0eeb802778b5">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="599" y="62" width="31" height="10" uuid="8301559f-06a1-42ee-972b-95803c250caa"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Página:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="630" y="52" width="79" height="10" uuid="80e1ddf0-bdd2-4596-a37b-489cf477721d">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="648" y="60" width="20" height="10" uuid="f71ac1f1-6bd4-467a-afc0-ae9c470eff4f">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="668" y="60" width="20" height="10" uuid="1555a7a9-9ef6-4704-bb4c-cd97963cdbb0">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[de]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="688" y="60" width="20" height="10" uuid="05e473a2-fb40-4029-9633-db2dee7c3b3a"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="52" width="708" height="20" uuid="8c2ec81f-eb4d-4baf-9804-f2c4858b9c5b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FORMULARIO DE AVANCE]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="118" splitType="Stretch">
+			<subreport>
+				<reportElement x="-56" y="98" width="792" height="20" uuid="fb615979-4b6c-418d-b2d3-a9fab195c4f6"/>
+				<subreportParameter name="pv_idcontrato">
+					<subreportParameterExpression><![CDATA[$P{pv_idcontrato}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["JasperReportsServer-1/reports/interactive/modejecucion/subrptFormularioPlaAvance.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="0" y="14" width="50" height="14" uuid="0a3e20cd-3f46-4d36-8362-ee0269870610"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Contrato N°:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="14" width="658" height="14" uuid="960bac8e-2958-4369-911b-7c343c7e9a6b">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cont_cod} +"-"+$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="28" width="50" height="14" uuid="0eb2fbd5-8b92-40ee-854f-3e926684ec26"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Empresa:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="40" y="28" width="509" height="14" uuid="d7a9c577-3d43-406a-a43d-5c27b3ca4909"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{empresa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="42" width="90" height="14" uuid="8baef40a-5e80-4da1-88c2-3aaee9867835"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto total del Contrato:]]></text>
+			</staticText>
+			<textField pattern="#,#00.###;(#,#00.###-)">
+				<reportElement x="90" y="42" width="90" height="14" uuid="00041bba-41ab-49fe-9c2c-b75cda16bf38"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalcontrato}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="56" width="70" height="14" uuid="960fa5d7-c78c-4c11-8c75-c30f6c97bdf4">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto Financiador:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="70" width="70" height="14" uuid="b353a2ea-de75-4e4c-b028-73c03e7a31dc"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto Contraparte:]]></text>
+			</staticText>
+			<textField pattern="#,#00.###;(#,#00.###-)">
+				<reportElement x="70" y="56" width="110" height="14" uuid="83eaf20c-68d1-495f-8c71-63dccf794278"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{montofinanciador}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,#00.###;(#,#00.###-)">
+				<reportElement x="70" y="70" width="110" height="14" uuid="fcdb8f47-e1be-40a9-8206-72027b64385e"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{montocontraparte}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="84" width="60" height="14" uuid="a3aae584-bf19-4de3-93fd-ab01a3df08b5"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[N° Planilla:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="60" y="84" width="120" height="14" uuid="54a14112-1d78-4f02-8c34-e858ed1c0a4c"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nroplanilla}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="590" y="28" width="50" height="14" uuid="049aacd9-d4fd-459c-8403-ba23497e8ece"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Inicio:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/YYYY">
+				<reportElement positionType="Float" x="640" y="28" width="60" height="14" uuid="fd33a369-56e1-42ec-bf06-a03e2bf5f226">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{txtfecha_inicio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="570" y="42" width="70" height="14" uuid="1d4918fa-7087-4507-99af-ca46beee71a6"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Finalización]]></text>
+			</staticText>
+			<textField pattern="dd/MM/YYYY" isBlankWhenNull="true">
+				<reportElement x="640" y="42" width="60" height="14" uuid="57af4b89-2411-40e2-8111-6963b3cccc76"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{txtfecha_final}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="581" y="56" width="59" height="14" uuid="5ab3abc2-c4cd-4301-a7f1-064932c7fc12"/>
+				<textElement textAlignment="Right">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Plazo Total:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="640" y="56" width="28" height="14" uuid="181ebb5a-5bf3-4765-87ab-27342401724a"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{plazocontrato}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="585" y="70" width="55" height="14" uuid="04018f56-c669-4c0d-8ed4-a055d577272b"/>
+				<textElement textAlignment="Right">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Días Ejecutados]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="640" y="70" width="28" height="14" uuid="74c85aa3-b4aa-4b38-8836-4737fdbd039a"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{diasejecutado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="576" y="84" width="64" height="14" uuid="d8784c6c-c6a6-48c6-8311-44e4eeb6b9ea"/>
+				<textElement textAlignment="Right">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Días por Ejecutar]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="640" y="84" width="28" height="14" uuid="c22eef48-bdb2-4b83-9396-913c9c41ddf9"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{diasporejecutar}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="250" y="42" width="70" height="14" uuid="56e6a81e-5dd1-4620-a300-f0a5f42decda"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Moneda:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="250" y="56" width="70" height="14" uuid="25c254fb-945b-4cca-9b5b-de207bce76d3"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto Especie:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="250" y="70" width="70" height="14" uuid="8cc90d00-5c41-44f5-b1ce-ddd96a06b116"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Avance Fisico Acum.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="42" width="100" height="14" uuid="1c048027-5719-4202-88bf-cfe952540cf5"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[BOLIVIANO]]></text>
+			</staticText>
+			<textField pattern="#,#00.###;(#,#00.###-)">
+				<reportElement x="320" y="56" width="100" height="14" uuid="aad853f5-a208-4ab7-9fc8-c3260a5a4ebd"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{montoespecie}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,#00.###;(#,#00.###-)">
+				<reportElement x="320" y="70" width="100" height="14" uuid="b4f2c931-74f6-41e6-a672-3b69d8e975f2"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{avancefisicoacumulado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="707" height="14" uuid="c78ba485-7833-4378-ba2f-2075be882673"/>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PERIODO:____/____/______  a  ____/____/______]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="321" y="84" width="100" height="14" uuid="64f3173f-f54e-4fc4-9d98-37164e8c8ef2"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codigo_contratofisico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="251" y="84" width="70" height="14" uuid="b99d3940-b01c-42db-a45f-08d30d909543"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Contrato Fisico:]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

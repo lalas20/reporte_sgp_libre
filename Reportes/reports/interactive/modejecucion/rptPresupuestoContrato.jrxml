@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2021-06-15T16:31:44 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptPresupuestoContrato" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="708" leftMargin="56" rightMargin="28" topMargin="28" bottomMargin="28" uuid="fc6390dc-8ca8-48b8-9349-7793c9c207a6">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ucp_prodd_jar_149"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="ireport.jasperserver.url" value="http://172.16.15.157:8011/jasperserver/"/>
+	<property name="ireport.jasperserver.user" value="jasperadmin"/>
+	<property name="ireport.jasperserver.reportUnit" value="/reports/interactive/modejecucion/rptPresupuestoContrato"/>
+	<parameter name="pv_idconcontrato" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select con.cont_cod,con.descripcion,con.totalcontrato,con.plazocontrato,
+ampliacion,
+0::numeric paralizacion,
+con.plazocontrato + ampliacion plazototal,
+con.fechaordenproceder,
+con.fecha_iniciocontrato,
+(to_date(con.fechaordenproceder,'DD/MM/YYYY') + con.plazocontrato) ::date fechaconclusion
+from conv_contrato con
+where con.idcon_contrato= $P{pv_idconcontrato}]]>
+	</queryString>
+	<field name="cont_cod" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="totalcontrato" class="java.math.BigDecimal"/>
+	<field name="plazocontrato" class="java.lang.Integer"/>
+	<field name="ampliacion" class="java.lang.Long"/>
+	<field name="paralizacion" class="java.math.BigDecimal"/>
+	<field name="plazototal" class="java.lang.Integer"/>
+	<field name="fechaordenproceder" class="java.lang.String"/>
+	<field name="fecha_iniciocontrato" class="java.sql.Date"/>
+	<field name="fechaconclusion" class="java.sql.Date"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="80" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="50" width="708" height="30" uuid="6d1db9f6-4f9a-42cb-bbd7-489e4a834bc6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRESUPUESTO GENERAL DEL CONTRATO]]></text>
+			</staticText>
+			<image scaleImage="RealSize">
+				<reportElement x="0" y="0" width="90" height="40" uuid="357c67ec-2292-49b6-8e26-6d4a13620bf5"/>
+				<imageExpression><![CDATA["JasperReportsServer-1/reports/interactive/modejecucion/ESCUDONAL.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="638" y="40" width="70" height="12" uuid="69ad3267-faf2-4b4d-a6fd-9bce27bb9626"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[SISTEMA SGP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="615" y="52" width="31" height="10" uuid="2be34dd4-556d-4169-88f0-50926d87415a">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="646" y="52" width="61" height="10" uuid="6d598c68-c138-487d-be07-44483b2a395f">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="616" y="62" width="31" height="10" uuid="97c27ac1-e163-4460-a9b1-9a7e1fb28985"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Página:]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="686" y="60" width="20" height="10" uuid="be8c7598-ad83-4281-a811-d46e62406d74"/>
+				<textElement textAlignment="Left">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="666" y="60" width="20" height="10" uuid="33ecb869-4fd7-4167-b5cd-c88903f4721a">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[de]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="646" y="60" width="20" height="10" uuid="8879bd28-b3fb-451f-b025-fd9f8b5cc2d5">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="62">
+			<subreport>
+				<reportElement x="-56" y="42" width="792" height="20" uuid="b948326e-a85f-467c-a0bf-6492d168a076"/>
+				<subreportParameter name="pv_idconcontrato">
+					<subreportParameterExpression><![CDATA[$P{pv_idconcontrato}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["JasperReportsServer-1/reports/interactive/modejecucion/subRptPresupuestoContrato.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="0" y="0" width="52" height="14" uuid="fb0e5554-646c-42cc-a846-84ec94409946">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Contrato N°:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="14" width="90" height="14" uuid="1bae3977-d894-41e2-9ee5-13ee0354eba2"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto Total del Contrato:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="620" y="28" width="40" height="14" uuid="0604d9a2-5fbe-4d1c-aaef-ca059c63b04a"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Plazo Total:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="250" y="28" width="50" height="14" uuid="616bc4dd-5b23-44fa-9a56-d3a43814b0fd"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ampliación:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="457" y="28" width="50" height="14" uuid="e5935987-d648-47d4-b7c4-cce3e2b52b46"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Paralización:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="28" width="70" height="14" uuid="dbd8ba20-af16-4058-9e77-51b8a6d63e32"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Plazo de Ejecución:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="14" width="52" height="14" uuid="ab6b3b3d-12ff-40b1-bce1-f9d24df3b88f"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Inicio:]]></text>
+			</staticText>
+			<textField pattern="#,##0.###">
+				<reportElement x="400" y="14" width="160" height="14" uuid="792dabf0-028b-4a9c-b222-ac1dc129ec11"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalcontrato}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="52" y="0" width="656" height="14" uuid="fabe374e-2b0b-496f-9683-8fa3b9019886"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cont_cod}+" - "+$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="28" width="75" height="14" uuid="a301a656-e6c7-4b3d-be5a-2245a603e442"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{plazocontrato}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="28" width="50" height="14" uuid="e4c996b1-5645-44dd-8f81-c139ecb7aed2"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ampliacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="507" y="28" width="53" height="14" uuid="86cebb56-8022-43d4-8a4b-639c6bd99e8b"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{paralizacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="660" y="28" width="48" height="14" uuid="83eed6e3-0c27-40e2-acae-b622a4fa9185"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{plazototal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="52" y="14" width="100" height="14" uuid="6abb3b04-1053-4596-8aea-ef212e3fca40"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_iniciocontrato}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="601" y="14" width="30" height="14" uuid="5cf23e19-97fd-4633-9a3a-65a280096a15"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Moneda:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="631" y="14" width="77" height="14" uuid="c075985a-e7d7-4673-9db2-109ea879b3b9"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[BOLIVIANO]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>
